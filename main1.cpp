@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <limits> 
 
 #include "dynamic_array.h"
 #include "linked_list.h"
@@ -13,6 +14,11 @@
 #include "complex.h"
 #include "exceptions.h"
 #include "slau_solver.h"
+
+void clearInputBuffer()
+{
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
 template <typename T>
 class MatrixHolder
@@ -95,12 +101,12 @@ bool readInt(int& val)
     if (!(std::cin >> val)) 
     {
         std::cin.clear(); 
-        std::cin.ignore(10000, '\n');
+        clearInputBuffer();
         std::cout << "Ошибка: введите целое число\n"; 
         val = -1; 
         return false;
     }
-    std::cin.ignore(10000, '\n'); 
+    clearInputBuffer();
     return true;
 }
 
@@ -109,12 +115,12 @@ bool readDouble(double& val)
     if (!(std::cin >> val)) 
     {
         std::cin.clear(); 
-        std::cin.ignore(10000, '\n');
+        clearInputBuffer();
         std::cout << "Ошибка: введите число\n"; 
         val = 0; 
         return false;
     }
-    std::cin.ignore(10000, '\n'); 
+    clearInputBuffer(); 
     return true;
 }
 
@@ -175,7 +181,7 @@ void readMatrix(SquareMatrix<T>& mat)
             T val; std::cin >> val; 
             mat.Set(i, j, val);
         }
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
 }
 
 template <>
@@ -196,7 +202,7 @@ void readMatrix<Complex>(SquareMatrix<Complex>& mat)
             mat.Set(i, j, Complex(re, im));
         }
     }
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
 }
 
 //Шаблонные операции
@@ -214,12 +220,12 @@ template <typename T> void doMulScalar(const SquareMatrix<T>& m)
     T s; std::cout << "Введите скаляр: ";
     if (std::cin >> s) 
     { 
-        std::cin.ignore(10000, '\n'); 
+        clearInputBuffer(); 
         printMatrix(m * s, "Результат умножения на скаляр"); 
     } else 
     { 
         std::cin.clear(); 
-        std::cin.ignore(10000, '\n'); 
+        clearInputBuffer(); 
         std::cout << "Ошибка ввода\n"; 
     }
 }
@@ -263,7 +269,7 @@ template <typename T> void doSwapRows(SquareMatrix<T>& m)
     int i, k; 
     std::cout << "Номера строк: "; 
     std::cin >> i >> k; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.SwapRows(i, k); printMatrix(m, "После SwapRows");
 }
 template <typename T> void doMulRow(SquareMatrix<T>& m) 
@@ -271,7 +277,7 @@ template <typename T> void doMulRow(SquareMatrix<T>& m)
     int r; T s; std::cout << "Номер строки: "; std::cin >> r;
     std::cout << "Скаляр: "; 
     std::cin >> s; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.MulRow(r, s); 
     printMatrix(m, "После MulRow");
 }
@@ -283,7 +289,7 @@ template <typename T> void doAddRow(SquareMatrix<T>& m)
     std::cin >> s; 
     std::cout << "Коэфф: "; 
     std::cin >> c; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.AddRow(t, s, c); 
     printMatrix(m, "После AddRow");
 }
@@ -292,7 +298,7 @@ template <typename T> void doSwapCols(SquareMatrix<T>& m)
     int j, k; 
     std::cout << "Номера столбцов: "; 
     std::cin >> j >> k; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.SwapCols(j, k); 
     printMatrix(m, "После SwapCols");
 }
@@ -303,7 +309,7 @@ template <typename T> void doMulCol(SquareMatrix<T>& m)
     std::cin >> c;
     std::cout << "Скаляр: ";
     std::cin >> s; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.MulCol(c, s); 
     printMatrix(m, "После MulCol");
 }
@@ -317,7 +323,7 @@ template <typename T> void doAddCol(SquareMatrix<T>& m)
     std::cin >> s; 
     std::cout << "Коэфф: ";
     std::cin >> c; 
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     m.AddCol(t, s, c); 
     printMatrix(m, "После AddCol");
 }
@@ -334,12 +340,12 @@ template <typename T> void doSolveSLAU(const SquareMatrix<T>& m)
         if (!(std::cin >> val)) 
         { 
             std::cin.clear(); 
-            std::cin.ignore(10000, '\n'); 
+            clearInputBuffer(); 
             return; 
         }
         b.Set(i, val);
     }
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     auto x = solveSLAU(m, b);
     std::cout << "Решение x:\n";
     for (int i = 0; i < n; ++i) 
@@ -717,7 +723,7 @@ void opAppend(Sequence<T>*& seq)
     T val;
     std::cout << "Введите значение: ";
     std::cin >> val;
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     
     Sequence<T>* r = seq->Append(val);
     if (r != seq) 
@@ -739,7 +745,7 @@ void opPrepend(Sequence<T>*& seq)
     T val;
     std::cout << "Введите значение: ";
     std::cin >> val;
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     
     Sequence<T>* r = seq->Prepend(val);
     if (r != seq) 
@@ -773,7 +779,7 @@ void opInsertAt(Sequence<T>*& seq)
     T val;
     std::cout << "Введите значение: ";
     std::cin >> val;
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     
     Sequence<T>* r = seq->InsertAt(val, idx);
     if (r != seq) 
@@ -824,7 +830,7 @@ void opSubsequence(Sequence<T>* seq)
     int start, end;
     std::cout << "Введите startIndex endIndex: ";
     std::cin >> start >> end;
-    std::cin.ignore(10000, '\n');
+    clearInputBuffer();
     
     if (start < 0 || end < start) 
     {
